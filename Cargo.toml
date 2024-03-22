@@ -1,0 +1,13 @@
+[package]
+name = "hpr"
+version = "0.1.0"
+edition = "2021"
+authors = ["L-Nafaryus <l.nafaryus@elnafo.ru"]
+
+[dependencies]
+nalgebra = "0.32.4"
+opencascade = { version = "0.2.0", default-features = false }
+
+[workspace]
+members = []
+resolver = "2"
