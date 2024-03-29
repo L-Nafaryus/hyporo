@@ -5,8 +5,12 @@ edition = "2021"
 authors = ["L-Nafaryus <l.nafaryus@elnafo.ru"]
 
 [dependencies]
+bevy = "0.13.1"
+cxx = "1.0.120"
+glam = { version = "0.24.0", features = ["bytemuck"] }
 nalgebra = "0.32.4"
-opencascade = { version = "0.2.0", default-features = false }
+opencascade = { version = "0.2.0", default-features = true }
+opencascade-sys = "0.2.0"
 
 [workspace]
 members = []

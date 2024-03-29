@@ -51,19 +51,24 @@
         devShells = forAllSystems (system: {
             default = let 
                 pkgs = nixpkgsFor.${system};
-                #db_host = "";
-                db_name = "hpr";
-                db_user = "hpr";
-                db_password = "test";
-                db_path = "temp/hpr";
+
             in pkgs.mkShell {
-                buildInputs = [ 
+
+                buildInputs = with pkgs; [ 
                     fenix.packages.${system}.complete.toolchain 
-                    pkgs.cargo-watch
-                    pkgs.mold-wrapped
-                    pkgs.cmake
-                    pkgs.opencascade-occt
+                    cargo-watch
+                    mold-wrapped
+                    cmake
+                    xorg.libXi xorg.libX11 xorg.libXcursor 
+                    lld libxkbcommon pkg-config alsa-lib libudev-zero 
+                    libGL 
+                    vulkan-tools vulkan-headers vulkan-loader vulkan-validation-layers
                 ];
+                shellHook = ''
+                    export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${
+                      with pkgs; lib.makeLibraryPath [ libGL xorg.libX11 xorg.libXi xorg.libXcursor libxkbcommon vulkan-loader ]
+                    }"
+                '';
             };
             hpr = crane.lib.${system}.devShell {
                 checks = self.checks.${system};
