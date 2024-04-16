@@ -1,7 +1,7 @@
 use cxx::UniquePtr;
 use opencascade_sys::ffi::{
     compute_normals, cylinder_to_surface, ellipse_to_HandleGeom2d_Curve, ellipse_value,
-    gp_Ax2_ctor, gp_Ax2d_ctor, gp_Ax3_from_gp_Ax2, gp_DZ, gp_Dir2d_ctor, gp_OX,
+    gp_Ax2_ctor, gp_Ax2d_ctor, gp_Ax3_from_gp_Ax2, gp_DZ, gp_Dir2d_ctor, gp_OX, gp_Pnt,
     handle_geom_plane_location, new_HandleGeomCurve_from_HandleGeom_TrimmedCurve,
     new_HandleGeomPlane_from_HandleGeomSurface, new_list_of_shape, new_point, new_point_2d,
     new_transform, new_vec, shape_list_append_face, type_name, write_stl, BRepAlgoAPI_Fuse_ctor,
@@ -10,17 +10,18 @@ use opencascade_sys::ffi::{
     BRepBuilderAPI_MakeWire_edge_edge_edge, BRepBuilderAPI_Transform_ctor,
     BRepFilletAPI_MakeFillet_ctor, BRepLibBuildCurves3d, BRepMesh_IncrementalMesh_ctor,
     BRepOffsetAPI_MakeThickSolid_ctor, BRepOffsetAPI_ThruSections_ctor,
-    BRepPrimAPI_MakeCylinder_ctor, BRepPrimAPI_MakePrism_ctor, BRep_Builder_ctor,
-    BRep_Builder_upcast_to_topods_builder, BRep_Tool_Surface, BRep_Tool_Triangulation, DynamicType,
-    ExplorerCurrentShape, GCE2d_MakeSegment_point_point, GC_MakeArcOfCircle_Value,
-    GC_MakeArcOfCircle_point_point_point, GC_MakeSegment_Value, GC_MakeSegment_point_point,
-    Geom2d_Ellipse_ctor, Geom2d_TrimmedCurve_ctor, Geom_CylindricalSurface_ctor,
-    HandleGeom2d_TrimmedCurve_to_curve, Handle_Poly_Triangulation_Get, MakeThickSolidByJoin,
-    Poly_Triangulation_Node, Poly_Triangulation_Normal, Poly_Triangulation_UV, StlAPI_Writer_ctor,
-    TColgp_Array1OfDir_ctor, TopAbs_Orientation, TopAbs_ShapeEnum, TopExp_Explorer_ctor,
-    TopLoc_Location_Transformation, TopLoc_Location_ctor, TopoDS_Compound_as_shape,
-    TopoDS_Compound_ctor, TopoDS_Face, TopoDS_Face_to_owned, TopoDS_Shape_to_owned,
-    TopoDS_cast_to_edge, TopoDS_cast_to_face, TopoDS_cast_to_wire,
+    BRepPrimAPI_MakeCylinder_ctor, BRepPrimAPI_MakePrism_ctor, BRepPrimAPI_MakeSphere_ctor,
+    BRep_Builder_ctor, BRep_Builder_upcast_to_topods_builder, BRep_Tool_Surface,
+    BRep_Tool_Triangulation, DynamicType, ExplorerCurrentShape, GCE2d_MakeSegment_point_point,
+    GC_MakeArcOfCircle_Value, GC_MakeArcOfCircle_point_point_point, GC_MakeSegment_Value,
+    GC_MakeSegment_point_point, Geom2d_Ellipse_ctor, Geom2d_TrimmedCurve_ctor,
+    Geom_CylindricalSurface_ctor, HandleGeom2d_TrimmedCurve_to_curve,
+    Handle_Poly_Triangulation_Get, MakeThickSolidByJoin, Poly_Triangulation_Node,
+    Poly_Triangulation_Normal, Poly_Triangulation_UV, StlAPI_Writer_ctor, TColgp_Array1OfDir_ctor,
+    TopAbs_Orientation, TopAbs_ShapeEnum, TopExp_Explorer_ctor, TopLoc_Location_Transformation,
+    TopLoc_Location_ctor, TopoDS_Compound_as_shape, TopoDS_Compound_ctor, TopoDS_Face,
+    TopoDS_Face_to_owned, TopoDS_Shape_to_owned, TopoDS_cast_to_edge, TopoDS_cast_to_face,
+    TopoDS_cast_to_wire,
 };
 
 use bevy::prelude::*;
@@ -29,6 +30,7 @@ use bevy::render::{
     render_asset::RenderAssetUsages,
     render_resource::PrimitiveTopology,
 };
+use bevy_egui::{egui, EguiContexts, EguiPlugin};
 
 #[derive(Debug)]
 pub struct BMesh {
@@ -39,6 +41,8 @@ pub struct BMesh {
 }
 
 pub fn bottle_mesh() -> BMesh {
+    //let pnt = gp_Ax2(0., 0., 0.);
+    //let sphere = BRepPrimAPI_MakeSphere_ctor(5.);
     let height = 70.0;
     let width = 50.0;
     let thickness = 30.0;
@@ -468,9 +472,17 @@ fn create_bottle_mesh() -> Mesh {
     ))
 }
 
+fn ui_example_system(mut contexts: EguiContexts) {
+    egui::Window::new("Hello").show(contexts.ctx_mut(), |ui| {
+        ui.label("world");
+    });
+}
+
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
+        .add_plugins(EguiPlugin)
+        .add_systems(Update, ui_example_system)
         .add_systems(Startup, setup)
         .add_systems(Update, input_handler)
         .run();

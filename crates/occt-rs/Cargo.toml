@@ -1,0 +1,12 @@
+[package]
+name = "occt-rs"
+version = "0.1.0"
+edition = "2021"
+
+[build-dependencies]
+cmake = "0.1.50"
+git2 = "0.18.3"
+cxx-build = "1.0.121"
+
+[dependencies]
+cxx = "1.0.121"

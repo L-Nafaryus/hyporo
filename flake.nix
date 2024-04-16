@@ -63,6 +63,7 @@
                     lld libxkbcommon pkg-config alsa-lib libudev-zero 
                     libGL 
                     vulkan-tools vulkan-headers vulkan-loader vulkan-validation-layers
+                    openssl
                 ];
                 shellHook = ''
                     export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${

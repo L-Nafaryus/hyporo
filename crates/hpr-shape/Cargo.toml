@@ -1,20 +1,13 @@
 [package]
-name = "hpr"
+name = "hpr-shape"
 version = "0.1.0"
 edition = "2021"
-authors = ["L-Nafaryus <l.nafaryus@elnafo.ru"]
 
 [dependencies]
-bevy = "0.13.1"
-bevy_egui = "0.26.0"
-cxx = "1.0.120"
-glam = { version = "0.24.0", features = ["bytemuck"] }
+cxx = "1.0.121"
 nalgebra = "0.32.4"
 opencascade = { version = "0.2.0", default-features = true }
 opencascade-sys = { git = "https://github.com/bschwind/opencascade-rs.git", branch = "main", features = [
     "builtin",
 ] }
-
-[workspace]
-members = ["crates/hpr-shape", "crates/occt-rs"]
-resolver = "2"
+occt-rs = { path = "../occt-rs" }
